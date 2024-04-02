@@ -1,0 +1,121 @@
+#=================================================================
+#
+# Authors: Benjamin Webb <bwebb@lincolninst.edu
+#
+# Copyright (c) 2024 Lincoln Institute of Land Policy
+#
+# Permission is hereby granted, free of charge, to any person
+# obtaining a copy of this software and associated documentation
+# files (the "Software"), to deal in the Software without
+# restriction, including without limitation the rights to use,
+# copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the
+# Software is furnished to do so, subject to the following
+# conditions:
+#
+# The above copyright notice and this permission notice shall be
+# included in all copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+# EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+# OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+# NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+# HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+# WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+# FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+# OTHER DEALINGS IN THE SOFTWARE.
+#
+# =================================================================
+
+server:
+    bind:
+        host: localhost #change to your hostname if running your own instance
+        port: 5000
+    url: ${PYGEOAPI_URL} #change to host URL  if running your own instance
+    mimetype: application/json; charset=UTF-8
+    encoding: utf-8
+    gzip: true
+    language: en-US
+    cors: true
+    pretty_print: true
+    limit: 1000
+    map:
+        url: https://tile.openstreetmap.org/{z}/{x}/{y}.png
+        attribution: '<a href="https://www.openstreetmap.org/copyright">© OpenStreetMap contributors</a>'
+
+logging:
+    level: ERROR
+    # logfile: /tmp/pygeoapi.log
+
+metadata:
+    identification:
+        title: EQUATE pygeoapi Service
+        description: Provides reference for community features in geoconnex.us
+        keywords:
+            - eqaute
+            - Geoconnex
+            - Reference
+        keywords_type: theme
+        terms_of_service: https://creativecommons.org/licenses/by/4.0/
+        url: https://github.com/internetofwater/reference.geoconnex.us
+    license:
+        name: CC-BY 4.0 license
+        url: https://creativecommons.org/licenses/by/4.0/
+    provider:
+        name: Internet of Water
+        url: https://github.com/internetofwater/reference.geoconnex.us
+    contact:
+        address: 113 Brattle St
+        city: Cambridge
+        stateorprovince: Massachussetts
+        postalcode: 02138
+        country: USA
+        email: bwebb@lincolninst.edu
+        url: https://cgsearth.org
+        role: pointOfContact
+
+resources:
+    centerlines:
+        type: collection
+        title: NHDPv2 Centerlines
+        description: NHDPv2 Centerlines
+        keywords:
+            - Centerlines
+            - USGS
+        links: &links
+            - type: application/html
+              rel: canonical
+              title: data source
+              href: https://drive.google.com/drive/folders/1lcan_MZZ_2Mk1yEBthWM88F3qI9k3CZl
+              hreflang: en-US
+        extents: &extents
+            spatial:
+                bbox: [-170, 15, -51, 72]
+                crs: http://www.opengis.net/def/crs/OGC/1.3/CRS84
+            temporal:
+                begin: null
+                end: null
+        providers: 
+            - type: feature
+              name: SQLiteGPKG
+              data: /data/nhd_centerlines.gpkg
+              id_field: fid
+              table: nhd_centerlines
+              geom_field: geom
+
+    insitu_chla:
+        type: collection
+        title: insitu_chla
+        description: insitu_chla
+        keywords:
+            - insitu_chla
+        links: *links
+        extents: *extents
+        providers: 
+            - type: feature
+              name: CSV
+              data: /data/insitu_chla.csv
+              id_field: ID
+              geometry:
+                x_field: latitude
+                y_field: longitude

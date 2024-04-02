@@ -1,0 +1,10 @@
+version: '3'
+
+services:
+  pygeoapi:
+    build: 
+      context: pygeoapi
+    ports:
+      - 5050:80
+    environment:
+      - PYGEOAPI_URL=http://localhost:5050
